@@ -1,0 +1,16 @@
+header{
+  border-left-style:solid;
+  border-top-left-radius: 10px;
+  border-bottom-width: 1px;
+  border-top-style:solid;
+  border-length: 10px;
+  padding-left:10px;
+}
+body{
+  font-family: 'Poppins', sans-serif;
+}
+div.nots{
+  border-style: solid;
+  height:100%;
+}
+@import "./fonts/Poppins-Black.ttf";
