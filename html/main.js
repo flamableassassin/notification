@@ -1,33 +1,30 @@
 var socket = io.connect("http://localhost:3000")
 let loaded = false;
+const { ipcRenderer } = require('electron')
+const token = ipcRenderer.sendSync('asynchronous-message',"token");
+document.getElementById("title").innerHTML += `<h3>Token: ${token}<br>Your Notifications:</h3>`;
 
 
+socket.on("connect",() => {
+  socket.emit("verify",token)
+})
 socket.on('connect_error', function(err) {
+  //reload page//
+  location.reload();
   console.log("client connect_error: ", err);
 });
 
 socket.on('connect_timeout', function(err) {
-  console.log("client connect_timeout: ", err);
+  alert("Unable to connect to server")
 });
-
-
 socket.on("data", (data) => {
-  console.log("getting data");
+  ipcRenderer.send('asynchronous-message', 'token')
   for (var item of data) {
-    if (item.token !== undefined) document.getElementById("title").innerHTML += `<h3>Token: ${item.token}<br>Your Notifications:</h3>`;
-    else document.getElementById("nots").innerHTML += `<br>hi`;
+    document.getElementById("nots").innerHTML += `hi<br>`;
   }
 })
 
 socket.on("new", (data) => {
-  document.getElementById("nots").innerHTML += `<br>hi`;
+  document.getElementById("nots").innerHTML += `hi<br>`;
 
 })
-
-function close() {
-  console.log("ok");
-  socket.emit("close",function () {
-
-  })
-  console.log("ok");
-}

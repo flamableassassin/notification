@@ -1,7 +1,8 @@
 const {
   app,
   BrowserWindow,
-  Notification
+  Notification,
+  ipcMain
 } = require('electron')
 
 //server stuff//
@@ -11,24 +12,21 @@ const http = require('http').Server(server);
 let socket = require('socket.io')(http);
 server.use(body_parser.json())
 
+//
 let open = false;
 let already_opened = false;
 let win;
 let notification_list = [];
+const token = "hi";
 app.on('ready', function() {
   //server online
-  let token;
   http.listen(3000, function() {
-    token = "asda";
-    notification_list.push({
-      token: token
-    })
     return;
-    send_not("App online", `Token: ${token}`, 10)
+    send_not("App online", `👍`, 10)
   })
   //----------------------------------------------------------//
   server.post("/", (req, res) => {
-    socket.emit("new", req.body)
+    socket.to("verified").emit("new", req.body)
     //adding the current time
     Object.assign(req.body, {
       time: Date.now()
@@ -46,8 +44,8 @@ app.on('ready', function() {
       else {
         already_opened = true;
         win = new BrowserWindow({
-          webPreferences:{
-            nodeIntegration:true
+          webPreferences: {
+            nodeIntegration: true
           },
           width: 1000,
           height: 1000,
@@ -60,21 +58,26 @@ app.on('ready', function() {
           win.show()
         })
       }
-      socket.on("close", (socket) => {
-        console.log("ok");
-        win.hide();
-        open = false;
-      })
     });
   })
 })
 
-socket.on("connection", (socket) => {
-  socket.emit("data", notification_list)
+ipcMain.on('asynchronous-message', (event, arg) => {
+  if (arg === "token") return event.returnValue = token;
+  else if (arg === "close") {
+    if (open) win.hide();
+    open = false
+  }
 })
-
-socket.on("close", (socket) => {
-  console.log("ok");
+socket.on("connection", (socket) => {
+  console.log(socket.id);
+  socket.emit("data", notification_list)
+  socket.on("verify", (test_token) => {
+    if (test_token !== token) return;
+    socket.join("verified")
+    send_not("Verified New Connection", `Socket id: ${socket.id}`, 10)
+    console.log("verified" + socket.id);
+  })
 })
 
 function send_not(title, msg, type) {

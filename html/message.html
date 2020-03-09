@@ -14,7 +14,7 @@
 
   </div>
   <footer>
-    <button type="button" name="close" onclick="close()">Close Window</button>
+    <button type="button" name="close" onclick="ipcRenderer.send('asynchronous-message', 'close')">Close Window</button>
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script src="./main.js" charset="utf-8"></script>
   </footer>
