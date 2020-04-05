@@ -4,7 +4,7 @@ const {
   Notification,
   ipcMain
 } = require('electron')
-
+const ip = require('ip');
 //server stuff//
 const body_parser = require('body-parser');
 const server = require('express')();
@@ -17,7 +17,8 @@ let open = false;
 let already_opened = false;
 let win;
 let notification_list = [];
-const token = "hi";
+const web_token = Math.random().toString(36).substring(2, 6);
+
 app.on('ready', function() {
   //server online
   http.listen(3000, function() {
@@ -53,7 +54,7 @@ app.on('ready', function() {
           frame: false
         })
 
-        win.loadURL("file:" + __dirname + "/html/message.html")
+        win.loadURL("file:" + __dirname + "/app/message.html")
         win.once('ready-to-show', () => {
           win.show()
         })
@@ -63,20 +64,22 @@ app.on('ready', function() {
 })
 
 ipcMain.on('asynchronous-message', (event, arg) => {
-  if (arg === "token") return event.returnValue = token;
-  else if (arg === "close") {
+  if (arg === "close") {
     if (open) win.hide();
     open = false
   }
 })
 socket.on("connection", (socket) => {
-  console.log(socket.id);
-  socket.emit("data", notification_list)
+  if (ip.isPrivate(socket.handshake.address)) {
+    socket.join("verified")
+    socket.emit("data", notification_list)
+  }
   socket.on("verify", (test_token) => {
     if (test_token !== token) return;
     socket.join("verified")
+    socket.emit("data", notification_list)
     send_not("Verified New Connection", `Socket id: ${socket.id}`, 10)
-    console.log("verified" + socket.id);
+    console.log("verified " + socket.id);
   })
 })
 
