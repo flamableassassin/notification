@@ -36,6 +36,10 @@ socket.on("data", (data) => {
   }
 })
 
+socket.on("verify",(data,fn) => {
+    fn("hi")
+})
+
 socket.on("new", (item) => {
   document.getElementById("nots").innerHTML += `
   <div class="not">

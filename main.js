@@ -9,13 +9,13 @@ const ip = require('ip');
 const body_parser = require('body-parser');
 const server = require('express')();
 const http = require('http').Server(server);
-let socket = require('socket.io')(http);
+let io = require('socket.io')(http);
 server.use(body_parser.json())
 
 //
 let open = false;
 let already_opened = false;
-let win;
+let win, app_id;
 let notification_list = [];
 const web_token = Math.random().toString(36).substring(2, 6);
 
@@ -27,7 +27,7 @@ app.on('ready', function() {
   })
   //----------------------------------------------------------//
   server.post("/", (req, res) => {
-    socket.to("verified").emit("new", req.body)
+    io.to("verified").emit("new", req.body)
     //adding the current time
     Object.assign(req.body, {
       time: Date.now()
@@ -70,16 +70,18 @@ ipcMain.on('asynchronous-message', (event, arg) => {
   }
 })
 
-socket.on("connection", (socket) => {
+io.on("connection", (socket) => {
   if (ip.isPrivate(socket.handshake.address)) {
+    app_id = socket.id;
     socket.join("verified")
-    socket.join("app")
-    socket.emit("data", notification_list)
+      .join("app")
+      .emit("data", notification_list)
   }
+  console.log(io.sockets);
   //sending to client asking if they want to verify new device connecting//
   if (open) {
-    socket.to("app").emit("verify", socket.handshake.address, (data) => {
-      if (data === "t") socket.join("verified")
+    io.to("app").emit("verify", socket.handshake.address, (data) => {
+      console.log(data);
     })
   } else {
     let not = send_not(`New connecting from ${socket.handshake.address}`, "Would you like to verify please open the notification if so", 10)
@@ -88,12 +90,9 @@ socket.on("connection", (socket) => {
     })
   }
 
-  socket.on("verify", (test_token) => {
-    if (test_token !== token) return;
-    socket.join("verified")
-    socket.emit("data", notification_list)
-    send_not("Verified New Connection", `Socket id: ${socket.id}`, 10)
-    console.log("verified " + socket.id);
+  socket.on("verify", (socket_id) => {
+    if (socket.rooms["test"] === undefined) socket.close();
+
   })
 })
 
