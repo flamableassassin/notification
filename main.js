@@ -21,9 +21,9 @@ const web_token = Math.random().toString(36).substring(2, 6);
 
 app.on('ready', function() {
   //server online
-  http.listen(3000, function() {
+  http.listen(2659, function() {
     return;
-    send_not("App online", `👍`, 10)
+    send_not("App online", `IP: ${ip.address()}`, 10)
   })
   //----------------------------------------------------------//
   server.post("/", (req, res) => {
@@ -50,7 +50,7 @@ app.on('ready', function() {
           },
           width: 1000,
           height: 1000,
-          resizeable: false,
+          resizeable: true,
           frame: false
         })
 
@@ -69,11 +69,25 @@ ipcMain.on('asynchronous-message', (event, arg) => {
     open = false
   }
 })
+
 socket.on("connection", (socket) => {
   if (ip.isPrivate(socket.handshake.address)) {
     socket.join("verified")
+    socket.join("app")
     socket.emit("data", notification_list)
   }
+  //sending to client asking if they want to verify new device connecting//
+  if (open) {
+    socket.to("app").emit("verify", socket.handshake.address, (data) => {
+      if (data === "t") socket.join("verified")
+    })
+  } else {
+    let not = send_not(`New connecting from ${socket.handshake.address}`, "Would you like to verify please open the notification if so", 10)
+    not.on("click", () => {
+
+    })
+  }
+
   socket.on("verify", (test_token) => {
     if (test_token !== token) return;
     socket.join("verified")
@@ -85,9 +99,9 @@ socket.on("connection", (socket) => {
 
 function send_not(title, msg, type) {
   let types = {
-    1: __dirname + "/img/msg.png", //message
+    1: __dirname + "/img/msg.png", // message
     2: __dirname + "/img/battery.png", // battery
-    3: __dirname + "/img/phone.png",
+    3: __dirname + "/img/phone.png", // phone call
     10: __dirname + "/img/server.png" // server msg
   }
   let not = new Notification({
