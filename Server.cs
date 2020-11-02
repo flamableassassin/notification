@@ -7,7 +7,7 @@ namespace Notify
 {
     class Server
     {
-        static void Main(string[] args)
+        Server()
         {
 
 
