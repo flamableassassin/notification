@@ -1,4 +1,4 @@
-﻿namespace Notify
+﻿namespace Notify.Forms
 {
     partial class MainForm
     {

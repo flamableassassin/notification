@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Notify
+namespace Notify.Forms
 {
     public partial class MainForm : Form
     {
@@ -16,9 +16,9 @@ namespace Notify
         {
             InitializeComponent();
         }
-        void treeView1_NodeMouseClick(object sender,TreeNodeMouseClickEventArgs e)
-        {
 
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
         }
     }
 }

@@ -46,18 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contacts.cs" />
-    <Compile Include="Messages.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Notify.Icons\Icons.cs" />
+    <Compile Include="Notify.Managers\Notification.cs" />
+    <Compile Include="Notify.Managers\Contacts.cs" />
+    <Compile Include="Notify.Managers\Messages.cs" />
+    <Compile Include="Notify.Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Notify.Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Notify.Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -81,6 +83,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Notify.Icons\battery.ico" />
+    <Content Include="Notify.Icons\msg.ico" />
+    <Content Include="Notify.Icons\phone.ico" />
+    <Content Include="Notify.Icons\server.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
