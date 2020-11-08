@@ -46,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Notify.API\Server.cs" />
+    <Compile Include="Notify.Data\Models.cs" />
     <Compile Include="Notify.Icons\Icons.cs" />
+    <Compile Include="Notify.Data\DataBaseManager.cs" />
     <Compile Include="Notify.Managers\Notification.cs" />
     <Compile Include="Notify.Managers\Contacts.cs" />
     <Compile Include="Notify.Managers\Messages.cs" />
@@ -56,7 +59,6 @@
     <Compile Include="Notify.Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Notify.Forms\MainForm.resx">
@@ -85,10 +87,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Notify.Data\data.db" />
     <Content Include="Notify.Icons\battery.ico" />
     <Content Include="Notify.Icons\msg.ico" />
     <Content Include="Notify.Icons\phone.ico" />
     <Content Include="Notify.Icons\server.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
