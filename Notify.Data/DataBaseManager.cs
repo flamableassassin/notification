@@ -3,27 +3,48 @@ using System;
 
 namespace Notify.Managers
 {
+    /*
+     * Notes:
+     * - Need to setup message limts to prevent the file getting to big
+     *          - Idea is to have 30 days
+     *          - Would run when after connecting
+     *
+     */
+
     internal class DataBaseManager
     {
         private static DateTime LastSave;
+        private static SqliteConnection Connection;
 
         public DataBaseManager()
         {
-            using (var connection = new SqliteConnection("Data Source=data.db"))
-            {
-                connection.Open();
+            Connection = new SqliteConnection("Data Source=data.db");
+            Connection.Open();
+        }
 
-                var command = connection.CreateCommand();
-                command.CommandText = @"CREATE TABLE Persons (
-                    PersonID int,
-                    LastName varchar(255),
-                    FirstName varchar(255),
-                    Address varchar(255),
-                    City varchar(255)
-                );";
-                int num = command.ExecuteNonQuery();
-                Console.WriteLine(num);
+        public static Contact InsertContact(Contact contact)
+        {
+            SqliteCommand command = Connection.CreateCommand();
+            command.Prepare();
+            return contact;
+        }
+
+        /*
+         * sets up the data base like adding tables
+         */
+
+        private static void setup()
+        {
+            bool isNew = true;
+            if (isNew)
+            {
+                SqliteCommand command = Connection.CreateCommand();
             }
+        }
+
+        public static void close()
+        {
+            Connection.Close();
         }
     }
 }

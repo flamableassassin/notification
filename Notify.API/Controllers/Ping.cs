@@ -6,7 +6,7 @@ namespace Notify.Api.Controllers
 {
     [Route("api/ping")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class PingController : ControllerBase
     {
         [HttpGet]
         public ActionResult Index()

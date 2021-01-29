@@ -10,18 +10,17 @@ namespace Notify
 {
     internal static class Program
     {
-        private static MainForm mainForm = null;
+        public static MainForm mainForm = null;
 
-        private static readonly ContactsManager Contacts = new ContactsManager();
-        private static readonly MessageManager Messages = new MessageManager(Contacts);
+        public static readonly ContactsManager Contacts = new ContactsManager();
+        public static readonly MessageManager Messages = new MessageManager(Contacts);
 
         private static readonly int Port = 3000;
 
         [STAThread]
         private static void Main(string[] args)
         {
-            new DataBaseManager();
-
+            new Notification();
             //CreateWebHostBuilder(args).Build().RunAsync();
 
             Application.EnableVisualStyles();

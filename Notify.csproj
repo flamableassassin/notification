@@ -524,12 +524,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Notify.API\Controllers\authenticate.cs" />
     <Compile Include="Notify.API\Controllers\Ping.cs" />
     <Compile Include="Notify.API\Server.cs" />
     <Compile Include="Notify.Data\Models.cs" />
-    <Compile Include="Notify.Icons\Icons.cs" />
+    <Compile Include="Notify.Forms\NewConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notify.Forms\NewConnectionForm.Designer.cs">
+      <DependentUpon>NewConnectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Notify.Notification\Icons.cs" />
     <Compile Include="Notify.Data\DataBaseManager.cs" />
-    <Compile Include="Notify.Managers\Notification.cs" />
+    <Compile Include="Notify.Notification\Notification.cs" />
     <Compile Include="Notify.Managers\Contacts.cs" />
     <Compile Include="Notify.Managers\Messages.cs" />
     <Compile Include="Notify.Forms\MainForm.cs">
@@ -540,6 +547,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Notify.Forms\NewConnectionForm.resx">
+      <DependentUpon>NewConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Notify.Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -568,10 +578,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Notify.Data\data.db" />
-    <Content Include="Notify.Icons\battery.ico" />
-    <Content Include="Notify.Icons\msg.ico" />
-    <Content Include="Notify.Icons\phone.ico" />
-    <Content Include="Notify.Icons\server.ico" />
+    <Content Include="Notify.Notification\icons\battery.ico" />
+    <Content Include="Notify.Notification\icons\msg.ico" />
+    <Content Include="Notify.Notification\icons\phone.ico" />
+    <Content Include="Notify.Notification\icons\server.ico" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
